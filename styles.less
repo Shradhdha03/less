@@ -1,0 +1,149 @@
+// Importing files  .....
+@import "variables.less";
+.btn-primary {
+    background-color: @themeColor;
+    border: @themeBorder;
+}
+
+.form-control {
+    border: @themeBorder;
+    color: @themeColor;
+}
+
+.form-group:after {
+    content: @requiredText;
+    color: @errorColor;
+}
+
+// Mixins &  Nested Styles  .....
+.themeTitle {
+    font-size: 36px;
+    font-weight: bold;
+    font-style: italic;
+    text-shadow: 2px 2px 0 #000;
+    color: @themeColor;
+}
+
+h1 {
+    .themeTitle;
+    &:hover {
+        color: blue;
+    }
+}
+
+body {
+    font-family: cursive;
+    h1 {
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    }
+}
+
+// Operaters  .....
+.form-control {
+    padding: @sidePadding @sidePadding + 5;
+    border-color: @themeColor + #00f;
+    border-width: (@sidePadding/2)-1;
+}
+
+// Parameterized mixins  .....
+.border-radius (@radius: 20px) {
+    -moz-border-radius: @radius;
+    -ms-border-radius: @radius;
+    -webkit-border-radius: @radius;
+    border-radius: @radius;
+}
+
+.box-shadow (@x: 3px, @y: 3px, @blur: 3px, @color: #000) {
+    -moz-box-shadow: @arguments;
+    -ms-box-shadow: @arguments;
+    -webkit-box-shadow: @arguments;
+    box-shadow: @arguments;
+}
+
+.form-control {
+    .border-radius;
+    .box-shadow(2px, 2px, 0, rgb(224, 114, 24))
+}
+
+.btn-primary {
+    .border-radius(30px);
+    .box-shadow
+}
+
+// Mixins with pattern matching  .....
+.box(success) {
+    @bgcolor: rgb(141, 226, 141);
+    background-color: @bgcolor;
+    border-color: darken(@bgcolor, 250%);
+}
+
+.box(error) {
+    @bgcolor: rgb(243, 138, 138);
+    background-color: @bgcolor;
+    border-color: darken(@bgcolor, 20%);
+}
+
+.box(other, @bgcolor) {
+    background-color: @bgcolor;
+    border-color: darken(@bgcolor, 20%);
+}
+
+.box(@_) {
+    display: block;
+    border-width: 2px;
+    border-style: solid;
+    padding: 10px;
+}
+
+.box(@_, @_) {
+    display: block;
+    border-width: 2px;
+    border-style: solid;
+    padding: 10px;
+}
+
+#box-1 {
+    .box(success);
+}
+
+#box-2 {
+    .box(error);
+}
+
+#box-3 {
+    .box(other, rgb(151, 151, 235));
+}
+
+// Guarded mixins  .....
+.somebox(@bgcolor) when (lightness(@bgcolor)=< 50%) {
+    background-color: @bgcolor;
+    box-shadow: 1px 1px 0px darken(@bgcolor, 5%), 2px 2px 0px darken(@bgcolor, 10%), 3px 3px 0px darken(@bgcolor, 15%), 4px 4px 0px darken(@bgcolor, 20%), 4px 4px 3px #000;
+}
+
+.somebox(@bgcolor) when (lightness(@bgcolor) > 50%) {
+    background-color: @bgcolor;
+    box-shadow: 1px 1px 0px lighten(@bgcolor, 5%), 2px 2px 0px lighten(@bgcolor, 10%), 3px 3px 0px lighten(@bgcolor, 15%), 4px 4px 0px lighten(@bgcolor, 20%), 4px 4px 3px #000;
+}
+
+#box-4 {
+    .somebox(#ccc);
+}
+
+#box-5 {
+    .somebox(#999);
+}
+
+#box-6 {
+    .somebox(#666);
+}
+
+// Built-in functions .....
+.alert-primary {
+    background-color: @themeColor;
+    border-color: darken(@themeColor, 20%)
+}
+
+.alert-danger {
+    background-color: hsl(hue(@themeColor), saturation(@themeColor), 70%);
+    border-color: darken(@themeColor, 50%)
+}
